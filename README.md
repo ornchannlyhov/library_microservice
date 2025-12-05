@@ -12,6 +12,8 @@ Then open **http://localhost:8080** in your browser.
 
 ## Architecture
 
+The system uses **one MongoDB instance** with **three separate databases** for data isolation:
+
 ```
 ┌──────────────────────────────────────────────┐
 │              Frontend (8080)                 │
@@ -22,6 +24,10 @@ Then open **http://localhost:8080** in your browser.
     │   :3001   │ │   :3002   │ │    :3003    │
     └─────┬─────┘ └─────┬─────┘ └──────┬──────┘
           │             │              │
+    ┌─────▼─────┐ ┌─────▼─────┐ ┌──────▼──────┐
+    │  user_db  │ │  book_db  │ │   loan_db   │
+    └─────┬─────┘ └─────┬─────┘ └──────┬──────┘
+          │             │              │
           └─────────────┼──────────────┘
                         │
                   ┌─────▼─────┐
@@ -29,6 +35,11 @@ Then open **http://localhost:8080** in your browser.
                   │   :27017  │
                   └───────────┘
 ```
+
+Each microservice connects to its **own database**:
+- User Service → `user_db`
+- Book Service → `book_db`
+- Loan Service → `loan_db`
 
 ## API Endpoints
 
@@ -61,7 +72,7 @@ Then open **http://localhost:8080** in your browser.
 ## Tech Stack
 
 - **Backend**: Node.js, Express.js
-- **Database**: MongoDB
+- **Database**: MongoDB (1 instance, 3 databases)
 - **Frontend**: Vanilla HTML/CSS/JS
 - **Containerization**: Docker & Docker Compose
 - **Testing**: Jest & Supertest
@@ -70,9 +81,9 @@ Then open **http://localhost:8080** in your browser.
 ## Running Tests
 
 ```bash
-cd user-service && npm test
-cd book-service && npm test
-cd loan-service && npm test
+cd user-service && npm install && npm test -- --forceExit
+cd book-service && npm install && npm test -- --forceExit
+cd loan-service && npm install && npm test -- --forceExit
 ```
 
 ## License
