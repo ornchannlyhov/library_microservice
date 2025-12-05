@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MicroLib - Library Management</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-brand">
+            <span class="logo">📚</span>
+            <span class="brand-text">MicroLib</span>
+        </div>
+        <div class="nav-tabs">
+            <button class="nav-tab active" data-tab="users">Users</button>
+            <button class="nav-tab" data-tab="books">Books</button>
+            <button class="nav-tab" data-tab="loans">Loans</button>
+        </div>
+    </nav>
+
+    <main class="container">
+        <!-- Users Section -->
+        <section id="users" class="tab-content active">
+            <div class="section-header">
+                <h1>Users</h1>
+                <button class="btn btn-primary" onclick="showModal('user')">+ Add User</button>
+            </div>
+            <div class="card">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="users-table"></tbody>
+                </table>
+                <div id="users-empty" class="empty-state">
+                    <span>👤</span>
+                    <p>No users yet. Add your first user!</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Books Section -->
+        <section id="books" class="tab-content">
+            <div class="section-header">
+                <h1>Books</h1>
+                <button class="btn btn-primary" onclick="showModal('book')">+ Add Book</button>
+            </div>
+            <div class="card">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Author</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="books-table"></tbody>
+                </table>
+                <div id="books-empty" class="empty-state">
+                    <span>📖</span>
+                    <p>No books yet. Add your first book!</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Loans Section -->
+        <section id="loans" class="tab-content">
+            <div class="section-header">
+                <h1>Active Loans</h1>
+                <button class="btn btn-primary" onclick="showModal('loan')">+ New Loan</button>
+            </div>
+            <div class="card">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>User</th>
+                            <th>Book</th>
+                            <th>Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="loans-table"></tbody>
+                </table>
+                <div id="loans-empty" class="empty-state">
+                    <span>📋</span>
+                    <p>No active loans.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Modal -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modal-title">Add Item</h2>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <form id="modal-form">
+                <div id="form-fields"></div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div id="toast" class="toast"></div>
+
+    <script src="app.js"></script>
+</body>
+</html>

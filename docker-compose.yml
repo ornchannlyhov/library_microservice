@@ -36,5 +36,14 @@ services:
       - user-service
       - book-service
 
+  frontend:
+    build: ./frontend
+    ports:
+      - "8080:80"
+    depends_on:
+      - user-service
+      - book-service
+      - loan-service
+
 volumes:
   mongo-data:
