@@ -14,6 +14,7 @@ let currentType = null;
 
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
+    lucide.createIcons();
     setupTabs();
     loadAllData();
 });
@@ -53,6 +54,7 @@ function renderUsers() {
     if (users.length === 0) {
         tbody.innerHTML = '';
         empty.style.display = 'block';
+        lucide.createIcons();
         return;
     }
 
@@ -63,12 +65,17 @@ function renderUsers() {
             <td>${escapeHtml(user.email)}</td>
             <td>
                 <div class="actions">
-                    <button class="btn btn-icon" onclick="editUser('${user._id}')" title="Edit">✏️</button>
-                    <button class="btn btn-icon danger" onclick="deleteUser('${user._id}')" title="Delete">🗑️</button>
+                    <button class="btn btn-icon" onclick="editUser('${user._id}')" title="Edit">
+                        <i data-lucide="pencil"></i>
+                    </button>
+                    <button class="btn btn-icon danger" onclick="deleteUser('${user._id}')" title="Delete">
+                        <i data-lucide="trash-2"></i>
+                    </button>
                 </div>
             </td>
         </tr>
     `).join('');
+    lucide.createIcons();
 }
 
 async function deleteUser(id) {
@@ -106,6 +113,7 @@ function renderBooks() {
     if (books.length === 0) {
         tbody.innerHTML = '';
         empty.style.display = 'block';
+        lucide.createIcons();
         return;
     }
 
@@ -116,12 +124,17 @@ function renderBooks() {
             <td>${escapeHtml(book.author)}</td>
             <td>
                 <div class="actions">
-                    <button class="btn btn-icon" onclick="editBook('${book._id}')" title="Edit">✏️</button>
-                    <button class="btn btn-icon danger" onclick="deleteBook('${book._id}')" title="Delete">🗑️</button>
+                    <button class="btn btn-icon" onclick="editBook('${book._id}')" title="Edit">
+                        <i data-lucide="pencil"></i>
+                    </button>
+                    <button class="btn btn-icon danger" onclick="deleteBook('${book._id}')" title="Delete">
+                        <i data-lucide="trash-2"></i>
+                    </button>
                 </div>
             </td>
         </tr>
     `).join('');
+    lucide.createIcons();
 }
 
 async function deleteBook(id) {
@@ -159,6 +172,7 @@ function renderLoans() {
     if (loans.length === 0) {
         tbody.innerHTML = '';
         empty.style.display = 'block';
+        lucide.createIcons();
         return;
     }
 
@@ -169,10 +183,13 @@ function renderLoans() {
             <td>${escapeHtml(loan.bookTitle || 'Unknown')}</td>
             <td>${new Date(loan.date).toLocaleDateString()}</td>
             <td>
-                <button class="btn btn-icon danger" onclick="returnBook('${loan._id}')" title="Return Book">↩️</button>
+                <button class="btn btn-icon danger" onclick="returnBook('${loan._id}')" title="Return Book">
+                    <i data-lucide="undo-2"></i>
+                </button>
             </td>
         </tr>
     `).join('');
+    lucide.createIcons();
 }
 
 async function returnBook(id) {
@@ -245,6 +262,7 @@ function showModal(type, data = null) {
     }
 
     modal.classList.add('active');
+    lucide.createIcons();
     document.getElementById('modal-form').onsubmit = handleSubmit;
 }
 
