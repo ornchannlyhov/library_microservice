@@ -36,14 +36,29 @@ services:
       - user-service
       - book-service
 
+  review-service:
+    build: ./review-service
+    ports:
+      - "3004:3004"
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/review_db
+      - USER_SERVICE_URL=http://user-service:3001
+      - BOOK_SERVICE_URL=http://book-service:3002
+    depends_on:
+      - user-service
+      - book-service
+
   frontend:
     build: ./frontend
     ports:
       - "8080:80"
+    volumes:
+      - ./frontend:/usr/share/nginx/html
     depends_on:
       - user-service
       - book-service
       - loan-service
+      - review-service
 
 volumes:
   mongo-data:

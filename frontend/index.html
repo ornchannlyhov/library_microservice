@@ -29,6 +29,10 @@
                 <i data-lucide="repeat"></i>
                 <span>Loans</span>
             </button>
+            <button class="nav-tab" data-tab="reviews">
+                <i data-lucide="star"></i>
+                <span>Reviews</span>
+            </button>
         </div>
     </nav>
 
@@ -111,6 +115,24 @@
                 <div id="loans-empty" class="empty-state">
                     <i data-lucide="clipboard-list" class="empty-icon"></i>
                     <p>No active loans.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Reviews Section -->
+        <section id="reviews" class="tab-content">
+            <div class="section-header">
+                <h1>Book Reviews</h1>
+                <button class="btn btn-primary" onclick="showModal('review')">
+                    <i data-lucide="plus"></i>
+                    Add Review
+                </button>
+            </div>
+            <div class="card">
+                <div id="reviews-container"></div>
+                <div id="reviews-empty" class="empty-state">
+                    <i data-lucide="message-square" class="empty-icon"></i>
+                    <p>No reviews yet. Be the first to review a book!</p>
                 </div>
             </div>
         </section>
