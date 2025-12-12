@@ -53,33 +53,43 @@ async function loadUsers() {
 }
 
 function renderUsers() {
-    const tbody = document.getElementById('users-table');
+    const container = document.getElementById('users-container');
     const empty = document.getElementById('users-empty');
 
     if (users.length === 0) {
-        tbody.innerHTML = '';
+        container.innerHTML = '';
         empty.style.display = 'block';
         lucide.createIcons();
         return;
     }
 
     empty.style.display = 'none';
-    tbody.innerHTML = users.map(user => `
-        <tr>
-            <td><strong>${escapeHtml(user.name)}</strong></td>
-            <td>${escapeHtml(user.email)}</td>
-            <td>
-                <div class="actions">
-                    <button class="btn btn-icon" onclick="editUser('${user._id}')" title="Edit">
-                        <i data-lucide="pencil"></i>
-                    </button>
-                    <button class="btn btn-icon danger" onclick="deleteUser('${user._id}')" title="Delete">
-                        <i data-lucide="trash-2"></i>
-                    </button>
+    container.innerHTML = `
+        <div class="card-grid">
+            ${users.map(user => `
+                <div class="item-card">
+                    <div class="card-content">
+                        <div class="card-avatar">${getInitials(user.name)}</div>
+                        <div class="card-main-info">
+                            <h3>${escapeHtml(user.name)}</h3>
+                            <div class="user-email">
+                                <i data-lucide="mail" style="width: 14px; height: 14px;"></i>
+                                ${escapeHtml(user.email)}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-actions">
+                        <button class="btn btn-icon" onclick="editUser('${user._id}')" title="Edit">
+                            <i data-lucide="pencil"></i>
+                        </button>
+                        <button class="btn btn-icon danger" onclick="deleteUser('${user._id}')" title="Delete">
+                            <i data-lucide="trash-2"></i>
+                        </button>
+                    </div>
                 </div>
-            </td>
-        </tr>
-    `).join('');
+            `).join('')}
+        </div>
+    `;
     lucide.createIcons();
 }
 
@@ -105,7 +115,7 @@ async function loadBooks() {
     try {
         const res = await fetch(`${API.books}/books`);
         books = await res.json();
-        
+
         // Load stats for each book
         for (const book of books) {
             try {
@@ -115,7 +125,7 @@ async function loadBooks() {
                 bookStats[book._id] = { averageRating: 0, totalReviews: 0 };
             }
         }
-        
+
         renderBooks();
     } catch (e) {
         showToast('Failed to load books', 'error');
@@ -123,7 +133,8 @@ async function loadBooks() {
 }
 
 function renderBooks() {
-    const container = document.getElementById('books-table').parentElement;
+    // FIX: Use specific container ID for books
+    const container = document.getElementById('books-container');
     const empty = document.getElementById('books-empty');
 
     if (books.length === 0) {
@@ -134,13 +145,12 @@ function renderBooks() {
     }
 
     empty.style.display = 'none';
-    
-    // Create book cards instead of table
+
     container.innerHTML = `
         <div class="book-grid">
             ${books.map(book => {
-                const stats = bookStats[book._id] || { averageRating: 0, totalReviews: 0 };
-                return `
+        const stats = bookStats[book._id] || { averageRating: 0, totalReviews: 0 };
+        return `
                     <div class="book-card">
                         <div class="book-card-header">
                             <div class="book-card-title">${escapeHtml(book.title)}</div>
@@ -161,7 +171,7 @@ function renderBooks() {
                         </div>
                     </div>
                 `;
-            }).join('')}
+    }).join('')}
         </div>
     `;
     lucide.createIcons();
@@ -170,7 +180,7 @@ function renderBooks() {
 function renderStars(rating) {
     const fullStars = Math.floor(rating);
     const stars = [];
-    
+
     for (let i = 0; i < 5; i++) {
         if (i < fullStars) {
             stars.push('<svg class="star" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>');
@@ -178,7 +188,7 @@ function renderStars(rating) {
             stars.push('<svg class="star empty" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>');
         }
     }
-    
+
     return `<div class="star-rating">${stars.join('')}</div>`;
 }
 
@@ -211,29 +221,43 @@ async function loadLoans() {
 }
 
 function renderLoans() {
-    const tbody = document.getElementById('loans-table');
+    const container = document.getElementById('loans-container');
     const empty = document.getElementById('loans-empty');
 
     if (loans.length === 0) {
-        tbody.innerHTML = '';
+        container.innerHTML = '';
         empty.style.display = 'block';
         lucide.createIcons();
         return;
     }
 
     empty.style.display = 'none';
-    tbody.innerHTML = loans.map(loan => `
-        <tr>
-            <td><strong>${escapeHtml(loan.userName || 'Unknown')}</strong></td>
-            <td>${escapeHtml(loan.bookTitle || 'Unknown')}</td>
-            <td>${new Date(loan.date).toLocaleDateString()}</td>
-            <td>
-                <button class="btn btn-icon danger" onclick="returnBook('${loan._id}')" title="Return Book">
-                    <i data-lucide="undo-2"></i>
-                </button>
-            </td>
-        </tr>
-    `).join('');
+    container.innerHTML = `
+        <div class="card-grid">
+            ${loans.map(loan => `
+                <div class="item-card">
+                    <div class="card-content">
+                        <div class="card-avatar" style="background: linear-gradient(135deg, var(--success), var(--primary));">
+                           <i data-lucide="book-open" style="color: white; width: 20px; height: 20px;"></i>
+                        </div>
+                        <div class="card-main-info">
+                            <h3>${escapeHtml(loan.bookTitle || 'Unknown Book')}</h3>
+                            <div class="card-sub-info">Borrowed by ${escapeHtml(loan.userName || 'Unknown User')}</div>
+                            <div class="loan-date">
+                                <i data-lucide="calendar" style="width: 12px; height: 12px; display: inline-block; vertical-align: middle;"></i>
+                                ${new Date(loan.date).toLocaleDateString()}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-actions">
+                        <button class="btn btn-icon danger" onclick="returnBook('${loan._id}')" title="Return Book" style="margin-left: auto;">
+                            <i data-lucide="undo-2"></i> Return Book
+                        </button>
+                    </div>
+                </div>
+            `).join('')}
+        </div>
+    `;
     lucide.createIcons();
 }
 
@@ -286,7 +310,10 @@ function renderReviews() {
                         ${renderStars(review.rating)}
                     </div>
                     ${review.reviewText ? `<div class="review-text">${escapeHtml(review.reviewText)}</div>` : ''}
-                    <div class="review-book-title">📚 ${escapeHtml(review.bookTitle)}</div>
+                    <div class="review-book-title">
+                        <i data-lucide="book-open" style="width: 14px; height: 14px; margin-right: 4px; display: inline-block; vertical-align: middle;"></i>
+                        ${escapeHtml(review.bookTitle)}
+                    </div>
                 </div>
             `).join('')}
         </div>
@@ -303,7 +330,7 @@ function formatDate(dateString) {
     const now = new Date();
     const diff = now - date;
     const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-    
+
     if (days === 0) return 'Today';
     if (days === 1) return 'Yesterday';
     if (days < 7) return `${days} days ago`;
@@ -359,7 +386,7 @@ function showModal(type, data = null) {
                 </div>
             `;
             break;
-        case 'loan':
+        case 'loan': {
             title.textContent = 'New Loan';
             const availableBooks = books.filter(b => !loans.find(l => l.bookId === b._id));
             fields.innerHTML = `
@@ -379,7 +406,8 @@ function showModal(type, data = null) {
                 </div>
             `;
             break;
-        case 'review':
+        }
+        case 'review': {
             title.textContent = 'Add Review';
             fields.innerHTML = `
                 <div class="form-group">
@@ -412,7 +440,7 @@ function showModal(type, data = null) {
                     <textarea name="reviewText" rows="4" placeholder="Share your thoughts about this book..."></textarea>
                 </div>
             `;
-            
+
             // Setup star rating interaction
             setTimeout(() => {
                 const stars = document.querySelectorAll('#rating-selector .star');
@@ -422,7 +450,7 @@ function showModal(type, data = null) {
                         document.getElementById('rating-input').value = selectedRating;
                         updateStarSelection();
                     });
-                    
+
                     star.addEventListener('mouseenter', () => {
                         stars.forEach((s, i) => {
                             if (i <= index) {
@@ -433,12 +461,12 @@ function showModal(type, data = null) {
                         });
                     });
                 });
-                
+
                 document.getElementById('rating-selector').addEventListener('mouseleave', () => {
                     stars.forEach(s => s.classList.remove('hover'));
                     updateStarSelection();
                 });
-                
+
                 function updateStarSelection() {
                     stars.forEach((s, i) => {
                         if (i < selectedRating) {
@@ -450,6 +478,7 @@ function showModal(type, data = null) {
                 }
             }, 100);
             break;
+        }
     }
 
     modal.classList.add('active');

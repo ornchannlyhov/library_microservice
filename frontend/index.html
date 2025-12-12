@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MicroLib - Library Management</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles.css?v=4">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
 </head>
@@ -47,16 +47,7 @@
                 </button>
             </div>
             <div class="card">
-                <table class="data-table">
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Email</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody id="users-table"></tbody>
-                </table>
+                <div id="users-container"></div>
                 <div id="users-empty" class="empty-state">
                     <i data-lucide="user-plus" class="empty-icon"></i>
                     <p>No users yet. Add your first user!</p>
@@ -74,16 +65,7 @@
                 </button>
             </div>
             <div class="card">
-                <table class="data-table">
-                    <thead>
-                        <tr>
-                            <th>Title</th>
-                            <th>Author</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody id="books-table"></tbody>
-                </table>
+                <div id="books-container"></div>
                 <div id="books-empty" class="empty-state">
                     <i data-lucide="book-plus" class="empty-icon"></i>
                     <p>No books yet. Add your first book!</p>
@@ -101,20 +83,28 @@
                 </button>
             </div>
             <div class="card">
-                <table class="data-table">
-                    <thead>
-                        <tr>
-                            <th>User</th>
-                            <th>Book</th>
-                            <th>Date</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody id="loans-table"></tbody>
-                </table>
+                <div id="loans-container"></div>
                 <div id="loans-empty" class="empty-state">
                     <i data-lucide="clipboard-list" class="empty-icon"></i>
                     <p>No active loans.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Reviews Section -->
+        <section id="reviews" class="tab-content">
+            <div class="section-header">
+                <h1>Book Reviews</h1>
+                <button class="btn btn-primary" onclick="showModal('review')">
+                    <i data-lucide="plus"></i>
+                    Add Review
+                </button>
+            </div>
+            <div class="card">
+                <div id="reviews-container"></div>
+                <div id="reviews-empty" class="empty-state">
+                    <i data-lucide="star" class="empty-icon"></i>
+                    <p>No reviews yet. Be the first to review!</p>
                 </div>
             </div>
         </section>
@@ -160,7 +150,7 @@
     <!-- Toast -->
     <div id="toast" class="toast"></div>
 
-    <script src="app.js"></script>
+    <script src="app.js?v=4"></script>
 </body>
 
 </html>
